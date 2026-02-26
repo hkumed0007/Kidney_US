@@ -10,6 +10,7 @@
 
 
 
+
 import os
 import torch
 import torch.nn as nn
@@ -91,8 +92,8 @@ multi_label_model.eval()
 
 
 validity_class_names = ['Not a Valid Image', 'Valid']
-class_names = [ 'Optimal', 'SubOptimal', 'Wrong']
-multi_label_class_names = ['Artefact', 'Incorrect Gain', 'Incorrect Position']
+class_names = [ 'Optimal', 'SubOptimal', 'Incorrect']
+multi_label_class_names = ['Artifact', 'Incorrect Gain', 'Incorrect Position']
 multi_label_num_classes = 3
 
 
@@ -102,16 +103,15 @@ def generate_feedback(predicted_classes):
         feedback_for_prediction = []
         labels = prediction.split("__")  # Change this line to split by "__" instead of "_"
         for label in labels:
-            if label == "Artefact":
-                feedback_for_prediction.append('''You can avoid acoustic shadowing from the ribs by asking the subject to take a 
-                                               deep inspiration, which will lower the diaphragm and hence the position of the
-                                                kidney away from the ribcage, or by positioning the probe in between the ribs to 
-                                               avoid the artefact. Fasting or gently applying pressure on the probe to displace 
-                                               the gas away from the area may partially overcome ring-down artefacts from bowel gas.
-                                                <a href="https://moodle.hku.hk/mod/page/view.php?id=2748898" target="_blank">Please Visit Moodle</a>''')
+            if label == "Artifact":
+                feedback_for_prediction.append('''Acoustic shadowing from the ribs can be reduced by asking the patient to take a deep breath, which lowers the diaphragm and positions the kidney away from the rib cage,
+                                                    or by positioning the probe between the ribs to avoid artifact. 
+                                                    Ring-down artifacts from bowel gas may be partially reduced by asking the patient to fast or by gently applying pressure with 
+                                                    the probe to displace gas from the imaging field.
+                                                    <a href="https://moodle.hku.hk/mod/page/view.php?id=2748898" target="_blank">Please Visit Moodle</a>''')
                 
             elif label == "Incorrect_Gain":
-                feedback_for_prediction.append('''The image is either too "bright" or too "dark". <a href="https://moodle.hku.hk/mod/page/view.php?id=2748898" target="_blank">Please Visit Moodle</a> or
+                feedback_for_prediction.append('''The image is either too bright or too dark. <a href="https://moodle.hku.hk/mod/page/view.php?id=2748898" target="_blank">Please Visit Moodle</a> or
                                                 <a href="https://123sonography.com/blog/ultrasound-101-part-5-gain-and-time-gain-compensation#:~:text=What%20is%20gain%3F,much%20each%20echo%20is%20amplified." target="_blank">Visit Sonography123</a>''')
                 
             elif label == "Incorrect_Position":
@@ -123,7 +123,7 @@ def generate_feedback(predicted_classes):
             elif label == "Optimal":
                 feedback_for_prediction.append('''Well done/good work for obtaining optimal image quality of the kidney.''')
                 
-            elif label == "Wrong":
+            elif label == "Incorrect":
                 feedback_for_prediction.append('''The image acquired is not of the kidney. <a href="https://moodle.hku.hk/mod/page/view.php?id=2748898" target="_blank">Please Visit Moodle</a>''')
             
             elif label == "Not_a_Valid_Image":
