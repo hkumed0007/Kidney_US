@@ -16,7 +16,7 @@ import torch
 import torch.nn as nn
 from torchvision import models
 
-device = torch.device("cpu")
+device = torch.device("gpu")
 
 
 
